@@ -10,7 +10,11 @@ npm install @eyeear/mscroll --save
 
 ## 使用
 ```
-import MScroll from 'mscroll'
+import MScroll from '@eyeear/mscroll'
+
+OR
+
+<script src="lib/mscroll.js"></script>
 
 ```
 
