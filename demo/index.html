@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MScroll 模拟滚动(条)</title>
+    <script src="rem.js"></script>
+</head>
+
+<body>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        li {
+            list-style: none;
+        }
+        
+        .nav-wrapper {
+            position: relative;
+            width: 100%;
+            height: 40px;
+            overflow: hidden;
+            background: #f00;
+            color: #fff;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .nav-scroller {
+            width: 100%;
+            height: 40px;
+        }
+        
+        .nav-scroller li {
+            float: left;
+            width: 70px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        .nav-scroller .active {
+            background: #000;
+            color: #fff;
+        }
+        
+        .wrapper {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+            background: red;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .item {
+            height: 40px;
+            line-height: 40px;
+            padding: 0 20px;
+            font-size: 16px;
+            color: black;
+            background: white;
+            border-bottom: 1px solid #000;
+        }
+        
+        .item:last-child {
+            border-width: 0;
+        }
+        
+        .load-wrapper {
+            position: relative;
+            width: 100%;
+            height: 2rem;
+            overflow: hidden;
+            background: #f00;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .load-scroller {
+            /* display: -webkit-box;
+            display: -webkit-flex;
+            display: flex; */
+            width: 100%;
+            height: 100%;
+        }
+        
+        .load-item {
+            /* -webkit-flex-shrink: 0;
+            flex-shrink: 0; */
+            float: left;
+            width: 1.6rem;
+            height: 1.6rem;
+            padding: 0.2rem 0.1rem;
+            margin-right: 0.2rem;
+            background: #f3e5e5;
+            border-radius: 0.1rem;
+            overflow: hidden;
+        }
+        
+        .load-item:last-child {
+            margin-right: 0;
+        }
+        
+        .load-item a {
+            display: block;
+            text-decoration: underline;
+        }
+        
+        .load-item img {
+            margin: 0 auto;
+            display: block;
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+        
+        .load-item p {
+            padding-top: 0.1rem;
+            font-size: 0.24rem;
+            color: #000;
+            text-align: center;
+        }
+        
+        @-webkit-keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        .loaded {
+            animation: fadeIn 1s both;
+            -webkit-animation: fadeIn 1s both;
+        }
+        
+        .pick-mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            background: -webkit-gradient(linear, 0 100%, 0 0, from(#fff), color-stop(.48, rgba(255, 255, 255, 0)), color-stop(.52, rgba(255, 255, 255, 0)), to(#fff));
+        }
+        
+        .pick-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 250px;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .pick-scroller {
+            width: 100%;
+        }
+        
+        .pick-item {
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            font-size: 18px;
+        }
+    </style>
+
+    <div style="height:3rem;background: #000;"></div>
+    <div style="height:3rem;background: #000;"></div>
+    <div class="nav-wrapper">
+        <ul class="nav-scroller">
+            <li>标签1</li>
+            <li>标签2</li>
+            <li>标签3</li>
+            <li>标签4</li>
+            <li>标签5</li>
+            <li>标签6</li>
+            <li>标签7</li>
+            <li>标签8</li>
+            <li>标签9</li>
+            <li>标签10</li>
+            <li>标签11</li>
+            <li>标签12</li>
+        </ul>
+    </div>
+    <div style="height:3rem;background: #000;"></div>
+    <div style="height:3rem;background: #000;"></div>
+    <div class="load-wrapper">
+        <ul class="load-scroller">
+            <li class="load-item">
+                <a href="https://github.com/lbshub">
+                    <img src="images/blank.gif" data-src="images/01.jpg" />
+                    <p>蜡笔小新1</p>
+                </a>
+            </li>
+            <li class="load-item">
+                <a href="https://github.com/lbshub">
+                    <img src="images/blank.gif" data-src="images/02.jpg" />
+                    <p>蜡笔小新2</p>
+                </a>
+            </li>
+            <li class="load-item">
+                <a href="https://github.com/lbshub">
+                    <img src="images/blank.gif" data-src="images/03.jpg" />
+                    <p>蜡笔小新3</p>
+                </a>
+            </li>
+            <li class="load-item">
+                <a href="https://github.com/lbshub">
+                    <img src="images/blank.gif" data-src="images/04.jpg" />
+                    <p>蜡笔小新4</p>
+                </a>
+            </li>
+            <li class="load-item">
+                <a href="https://github.com/lbshub">
+                    <img src="images/blank.gif" data-src="images/05.jpg" />
+                    <p>蜡笔小新5</p>
+                </a>
+            </li>
+            <li class="load-item">
+                <a href="https://github.com/lbshub">
+                    <img src="images/blank.gif" data-src="images/06.jpg" />
+                    <p>蜡笔小新6</p>
+                </a>
+            </li>
+            <li class="load-item">
+                <a href="https://github.com/lbshub">
+                    <img src="images/blank.gif" data-src="images/07.jpg" />
+                    <p>蜡笔小新7</p>
+                </a>
+            </li>
+            <li class="load-item">
+                <a href="https://github.com/lbshub">
+                    <img src="images/blank.gif" data-src="images/08.jpg" />
+                    <p>蜡笔小新8</p>
+                </a>
+            </li>
+            <li class="load-item">
+                <a href="https://github.com/lbshub">
+                    <img src="images/blank.gif" data-src="images/09.jpg" />
+                    <p>蜡笔小新9</p>
+                </a>
+            </li>
+            <li class="load-item">
+                <a href="https://github.com/lbshub">
+                    <img src="images/blank.gif" data-src="images/10.jpg" />
+                    <p>蜡笔小新10</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div style="height:3rem;background: #000;"> </div>
+    <div style="height:3rem;background: #000;"> </div>
+    <div class="wrapper">
+        <div class="scroller">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+            <div class="item">5</div>
+            <div class="item">6</div>
+            <div class="item">7</div>
+            <div class="item">8</div>
+            <div class="item">9</div>
+            <div class="item">10</div>
+            <div class="item">11</div>
+            <div class="item">12</div>
+            <div class="item">13</div>
+            <div class="item">14</div>
+            <div class="item">15</div>
+            <div class="item">16</div>
+            <div class="item">17</div>
+            <div class="item">18</div>
+            <div class="item">19</div>
+            <div class="item">20</div>
+        </div>
+    </div>
+    <div style="height:3rem;background: #000;"></div>
+    <div style="height:3rem;background: #000;"></div>
+    <div class="pick-wrapper">
+        <ul class="pick-scroller">
+            <li class="pick-item" data-value="1">选项1</li>
+            <li class="pick-item" data-value="2">选项2</li>
+            <li class="pick-item" data-value="3">选项3</li>
+            <li class="pick-item" data-value="4">选项4</li>
+            <li class="pick-item" data-value="5">选项5</li>
+            <li class="pick-item" data-value="6">选项6</li>
+            <li class="pick-item" data-value="7">选项7</li>
+            <li class="pick-item" data-value="8">选项8</li>
+            <li class="pick-item" data-value="9">选项9</li>
+            <li class="pick-item" data-value="10">选项10</li>
+        </ul>
+        <div class="pick-mask"></div>
+    </div>
+    <div style="height:3rem;background: #000;"></div>
+    <div style="height:3rem;background: #000;"></div>
+
+    <script src="../lib/mscroll.js"></script>
+    <script>
+        // 水平方向 
+        const navScroll = new MScroll('.nav-wrapper')
+        navScroll.wrapper.addEventListener('click', (e) => {
+            let target = e.target
+            if (target.tagName.toLowerCase() === 'li') {
+                navScroll.moveTo(target)
+            }
+        })
+
+        // ------------------------------------------------------------
+
+        // 图片懒加载
+        new MScroll('.load-wrapper', {
+            showScrollbar: true,
+            lazyload: true,
+            mouse: true
+        })
+
+        // ------------------------------------------------------------
+
+        // 垂直方向 自动加载更多
+        const scroller = document.querySelector('.scroller')
+        const scroll = new MScroll('.wrapper', {
+            vertical: true,
+            wheel: true,
+            mouse: true,
+            showScrollbar: true,
+            scrollbarOpacity: 1,
+            scrollbarColor: '#f00',
+            scrollEnd(offset, maxOffset) {
+                // 自动加载
+                if (offset === maxOffset) {
+                    // 加载数据
+                    setTimeout(() => {
+                        let len = scroller.children.length
+                        let html = ''
+                        if (len > 100) return
+                        for (let i = 1; i <= 20; i++) {
+                            html += '<div class="item">内容 - ' + (len + i) + '</div>'
+                        }
+                        scroller.innerHTML += html
+                        scroll.refresh() // 加载完成后 需手动刷新
+                    }, 1000)
+                }
+            }
+        })
+
+        // ------------------------------------------------------------
+
+        // 选择器模式
+        const picker = new MScroll('.pick-wrapper', {
+            vertical: true,
+            wheel: true,
+            mouse: true,
+            picker: true,
+            // index: 3,
+            scrollEnd() {
+                // console.log('index', this.index)
+                console.log('index', picker.index)
+                console.log('value', picker.scroller.children[picker.index].dataset.value)
+                console.log('text', picker.scroller.children[picker.index].textContent)
+            }
+        })
+    </script>
+
+</body>
+
+</html>
