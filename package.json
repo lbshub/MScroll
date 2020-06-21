@@ -1,6 +1,6 @@
 {
     "name": "@eyeear/mscroll",
-    "version": "1.0.2",
+    "version": "1.0.5",
     "description": "模拟滚动(条)",
     "main": "lib/mscroll.js",
     "scripts": {

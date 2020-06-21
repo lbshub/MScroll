@@ -4,7 +4,7 @@
  **/
 
 import utils from './utils'
-
+np
 let _transition_ = utils.prefix('transition')
 let _transform_ = utils.prefix('transform')
 
@@ -48,7 +48,7 @@ class MScroll {
         this._initObserve()
         this._initScrollbar()
         this._initLazyLoad()
-        this._bind()
+        this._initEvent()
         this.refresh()
         this.offset = 0
     }
@@ -89,24 +89,6 @@ class MScroll {
         }
 
         this.$emit('setup')
-    }
-
-    _bind() {
-        utils.on(this.wrapper, 'touchstart', this.start = this._start.bind(this))
-        utils.on(this.wrapper, 'touchmove', this.move = this._move.bind(this))
-        utils.on(this.wrapper, 'touchend', this.end = this._end.bind(this))
-        utils.on(this.scroller, ['transitionend', 'webkitTransitionEnd'], this.transitionEnd = this._scrollEnd.bind(this))
-        utils.on(window, 'resize', this.resize = this._resize.bind(this))
-        this.wheel && utils.on(this.wrapper, ['wheel', 'mousewheel', 'DOMMouseScroll'], this.mousewheel = this._wheel.bind(this))
-        if (this.mouse) {
-            utils.on(this.wrapper, 'mousedown', this.start)
-            utils.on(document, 'mousemove', this.move)
-            utils.on(document, 'mouseup', this.end)
-        }
-        this.$on('setup', this.setup)
-        this.$on('scrollStart', this.scrollStart)
-        this.$on('scrollMove', this.scrollMove)
-        this.$on('scrollEnd', this.scrollEnd)
     }
 
     _start(e) {
@@ -273,6 +255,24 @@ class MScroll {
     _setTransform(offset) {
         this.scroller.style[_transform_] = this.vertical ? 'translate3d(0px, ' + offset + 'px, 0px)' : 'translate3d(' + offset + 'px, 0px, 0px)'
         this.$emit('scrollMove', offset)
+    }
+
+    _initEvent() {
+        utils.on(this.wrapper, 'touchstart', this.start = this._start.bind(this))
+        utils.on(this.wrapper, 'touchmove', this.move = this._move.bind(this))
+        utils.on(this.wrapper, 'touchend', this.end = this._end.bind(this))
+        utils.on(this.scroller, ['transitionend', 'webkitTransitionEnd'], this.transitionEnd = this._scrollEnd.bind(this))
+        utils.on(window, 'resize', this.resize = this._resize.bind(this))
+        this.wheel && utils.on(this.wrapper, ['wheel', 'mousewheel', 'DOMMouseScroll'], this.mousewheel = this._wheel.bind(this))
+        if (this.mouse) {
+            utils.on(this.wrapper, 'mousedown', this.start)
+            utils.on(document, 'mousemove', this.move)
+            utils.on(document, 'mouseup', this.end)
+        }
+        this.$on('setup', this.setup)
+        this.$on('scrollStart', this.scrollStart)
+        this.$on('scrollMove', this.scrollMove)
+        this.$on('scrollEnd', this.scrollEnd)
     }
 
     _initObserve() {
@@ -503,7 +503,6 @@ class MScroll {
             utils.off(document, 'mousemove', this.move)
             utils.off(document, 'mouseup', this.end)
         }
-
     }
 }
 

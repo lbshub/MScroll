@@ -111,4 +111,10 @@ OR
     - scrollMove 滚动中执行回调
     - scrollEnd 滚动结束执行回调
 
+  instance 实例方法
+    - refresh() scroller滚动容器尺寸发生变化时 手动刷新
+    - scrollTo(offset, duration) scroller滚动到指定位置 
+    - moveTo(el, duration, center) scroller滚动到内部元素所在位置 center为true则元素位于中间位置
+    - pickTo(index, duration) 选择器模式时 选择指定的元素
+    - destroy() 要销毁实例时调用 注销事件绑定
 ```
