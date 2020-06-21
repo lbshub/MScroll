@@ -4,7 +4,7 @@
  **/
 
 import utils from './utils'
-np
+
 let _transition_ = utils.prefix('transition')
 let _transform_ = utils.prefix('transform')
 
