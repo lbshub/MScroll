@@ -128,10 +128,6 @@ class MScroll {
         this.moveX = moveX
         this.moveY = moveY
 
-        if (moveTime - (this.endTime = this.endTime || 0) > this.limitTime && !this.moving && Math.abs(this.moveOffset) < 10) {
-            return
-        }
-
         if (this.direction == '') {
             this.direction = utils.getDirection(Math.abs(moveX - this.startX), Math.abs(moveY - this.startY))
         }
@@ -139,6 +135,10 @@ class MScroll {
         if (!this.vertical) {
             if (this.direction === 'vertical') return
             if (this.direction === 'horizontal') e.preventDefault()
+        }
+
+        if (!this.moving && Math.abs(this.moveOffset) < 10) {
+            return
         }
 
         if (!this.moving) {
@@ -171,9 +171,7 @@ class MScroll {
             return
         }
 
-        this.endTime = Date.now()
-
-        const duration = this.endTime - this.startTime
+        const duration = Date.now() - this.startTime
 
         if (duration < this.limitTime && Math.abs(this.moveOffset) > 10) {
             const offset = this._momentum(this.offset - this.startOffset, duration)

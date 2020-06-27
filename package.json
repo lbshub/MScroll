@@ -1,10 +1,10 @@
 {
     "name": "@eyeear/mscroll",
-    "version": "1.0.6",
+    "version": "1.1.0",
     "description": "模拟滚动(条)",
     "main": "lib/mscroll.js",
     "scripts": {
-        "build": "webpack --config webpack.config.js"
+        "build": "webpack --progress --colors --config webpack.config.js"
     },
     "keywords": [
         "scroll"
@@ -14,7 +14,6 @@
     "devDependencies": {
         "@babel/core": "^7.10.2",
         "@babel/plugin-transform-runtime": "^7.10.1",
-        "@babel/polyfill": "^7.10.1",
         "@babel/preset-env": "^7.10.2",
         "babel-loader": "^8.1.0",
         "webpack": "^4.43.0",
